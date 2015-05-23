@@ -1,0 +1,44 @@
+#container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#container section {
+    background: #FDE3A7;
+    padding: 1em;
+    border-radius: 1em;
+    margin-bottom: 1em;
+}
+
+body {
+    font-family: "Lato";
+    color: #333;
+}
+
+p.label {
+    text-align: center;
+    transform: translateY(-0.9em);
+    color: white;
+}
+
+.axis path {
+    fill: none;
+    stroke: black;
+}
+
+.axis {
+    font-size: 8pt;
+    font-family: sans-serif;
+}
+
+.tick {
+    fill: none;
+    stroke: black;
+}
+
+circle {
+    stroke: black;
+    stroke-width: 0.5px;
+    fill: RoyalBlue;
+    opacity: 0.6;
+}

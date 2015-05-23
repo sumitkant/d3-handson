@@ -1,0 +1,94 @@
+[
+    {
+        "x_value": 30,
+        "y_value": 40,
+        "intensity": 16
+    },
+    {
+        "x_value": 60,
+        "y_value": 70,
+        "intensity": 4
+
+    },
+    {
+        "x_value": 80,
+        "y_value": 40,
+        "intensity": 20
+
+    },
+    {
+        "x_value": 40,
+        "y_value": 40,
+        "intensity": 18
+    },
+    {
+        "x_value": 10,
+        "y_value": 400,
+        "intensity": 13
+    },
+    {
+        "x_value": 120,
+        "y_value": 100,
+        "intensity": 12
+    },
+    {
+        "x_value": 120,
+        "y_value": 100,
+        "intensity": 20
+    },
+    {
+        "x_value": 120,
+        "y_value": 100,
+        "intensity": 15
+    },
+    {
+        "x_value": 140,
+        "y_value": 120,
+        "intensity": 30
+    },
+    {
+        "x_value": 82,
+        "y_value": 300,
+        "intensity": 15
+    },
+    {
+        "x_value": 220,
+        "y_value": 400,
+        "intensity": 70
+    },
+    {
+        "x_value": 620,
+        "y_value": 300,
+        "intensity": 43
+    },
+    {
+        "x_value": 10,
+        "y_value": 700,
+        "intensity": 14
+    },
+    {
+        "x_value": 210,
+        "y_value": 180,
+        "intensity": 27
+    },
+    {
+        "x_value": 120,
+        "y_value": 100,
+        "intensity": 32
+    },
+    {
+        "x_value": 120,
+        "y_value": 100,
+        "intensity": 21
+    },
+    {
+        "x_value": 120,
+        "y_value": 300,
+        "intensity": 28
+    },
+    {
+        "x_value": 220,
+        "y_value": 100,
+        "intensity": 15
+    }
+]
