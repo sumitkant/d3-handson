@@ -12,13 +12,11 @@
 		for (var i = 0; i < data.length; i++) {
 			states.push(data[i][0])
 		};
-		console.log(states);
 
 		//create years label
 		for (var i = 1; i < fields.length; i++) {
 			years.push(fields[i].label)
 		};
-		console.log(years);
 
 		//generate values
 		for (var j = 0; j < data.length; j++) {
@@ -53,15 +51,17 @@
 			.append("g")
 			.attr("transform", "translate(" + margins.left + "," + margins.top + ")")
 			.attr("id", "chart");
+		var timeDomain = [new Date(1998, 0), new Date(2014, 0)]
 		var time_scale = d3.time.scale()
 			.range([0, chart_dimensions.width])
-			.domain([new Date(1998, 0), new Date(2014, 0)]);
+			.domain(timeDomain);
 		var percent_scale = d3.scale.linear()
 			.range([chart_dimensions.height, 0])
-			.domain([-10, 10]);
+			.domain([-30, 30]);
 		var time_axis = d3.svg.axis()
-			.ticks(17)
+			.ticks(years.length)
 			.scale(time_scale);
+
 		var count_axis = d3.svg.axis()
 			.scale(percent_scale)
 			.orient("left");
@@ -85,46 +85,72 @@
 			.data(states)
 			.enter()
 			.append("div")
-			.attr("class", "key_line");
+			.attr("class", "key_line")
+			.attr("data-id", function (d, i) {
+				return i;
+			});
 
 		key_items.append("div")
-			.attr("id", function (d) {
-				return;
-			})
 			.attr("class", "key_square");
+
 		key_items.append("div")
 			.attr("class", "key_label")
 			.text(function (d) {
 				return d;
 			});
 
-		d3.select("svg").append("g")
-			.selectAll("g")
-			.data(stateDeficit)
-			.enter()
-			.append("g")
-			.attr("class", "dataPoints");
+		var g = d3.select("svg").append("g")
+			.attr("transform", "translate(60,0)")
 
-		d3.selectAll(".dataPoints")
-		.selectAll("circle")
-			.data(stateDeficit)
-			.enter()
-			.append("circle");
+		key_items.on("click", function (e) {
+			var _this = this;
+			var nodes = _this.parentElement.childNodes;
+			for (var i = 0; i < nodes.length; i++) {
+				if (nodes[i].className === "key_line active" ) {
+					nodes[i].className = "key_line";
+				}
+			}
+			_this.className = "key_line active";
+			var data = stateDeficit[this.getAttribute("data-id")];
 
-		d3.selectAll("circle")
-			.attr("cx", function (d) {
-				return;
-			})
-			.attr("cy", function (d) {
-				for (var i = d.length - 1; i >= 0; i--) {
-					for (var j = d[i].length - 1; j >= 0; j--) {
-						return d[i][j];
-					};
-				};
-			})
-			.attr("r", function (d) {
-				return 5;
-			});
+			var y_scale = d3.scale.linear()
+				.domain([-30, 30])
+				.range([container_dimensions.height, 0]);
+
+			//			var line = d3.svg.line()
+			//				.x(function (d, i) {
+			//					return i * 55;
+			//				})
+			//				.y(function (d) {
+			//					return y_scale(d);
+			//				})
+			//				.interpolate("basis");
+			//
+			//			g.select("path")
+			//				.data(data)
+			//				.enter()
+			//				.append("path")
+			//				.attr("d", line)
+			//				.style("stroke", 2);
+
+			g.selectAll("circle")
+				.data(data)
+				.enter()
+				.append("circle")
+				.style("fill", "#16A085")
+
+			d3.selectAll("circle")
+				.attr("cx", function (d, i) {
+					return i * 55;
+				})
+				.attr("cy", function (d, i) {
+					return y_scale(d);
+				})
+				.attr("r", function (d, i) {
+					return 5;
+				});
+
+		});
 
 	});
 }());
