@@ -5,5 +5,8 @@ Revenue Deficit as % of GSDP figures from 1997-98 to 2013-14 (as on 30 Nov., 201
 ### Up & Running
 Make sure you have ```npm``` & ```gulp``` installed
 
-```npm install```
-```gulp```
+```
+npm install
+gulp
+```
+
