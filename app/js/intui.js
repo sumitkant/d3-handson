@@ -32,7 +32,7 @@
 
 		var container_dimensions = {
 				width: 900,
-				height: 400
+				height: 500
 			},
 			margins = {
 				top: 10,
@@ -93,9 +93,9 @@
 			})
 			.attr("class", "key_square");
 		key_items.append("div")
-			.attr("class", "key_labe	l")
+			.attr("class", "key_label")
 			.text(function (d) {
-				return d.line_name
+				return d;
 			});
 
 		d3.select("svg").append("g")
