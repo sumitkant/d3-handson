@@ -106,7 +106,7 @@
 			var _this = this;
 			var nodes = _this.parentElement.childNodes;
 			for (var i = 0; i < nodes.length; i++) {
-				if (nodes[i].className === "key_line active" ) {
+				if (nodes[i].className === "key_line active") {
 					nodes[i].className = "key_line";
 				}
 			}
@@ -140,6 +140,8 @@
 				.style("fill", "#16A085")
 
 			d3.selectAll("circle")
+				.transition()
+				.duration(500)
 				.attr("cx", function (d, i) {
 					return i * 55;
 				})
