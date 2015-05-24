@@ -24,11 +24,14 @@
 		for (var j = 0; j < data.length; j++) {
 			var temp = [];
 			for (var i = 1; i < data[j].length; i++) {
+				// case where values are "NA"
+				if (data[j][i] == "NA") {
+					data[j][i] = -200; //chuck "NA" it off the chart
+				}
 				temp.push(data[j][i]);
 			};
 			_STATE_DEFICIT_.push(temp);
 		}
-		console.log(_STATE_DEFICIT_);
 
 		// CHART PROPERTIES ================================
 		var container_dimensions = {
@@ -77,9 +80,11 @@
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + chart_dimensions.height + ")")
 			.call(time_axis);
+
 		chart.append("g")
 			.attr("class", "y axis")
 			.call(count_axis);
+
 		d3.select(".y.axis")
 			.append("text")
 			.attr("text-anchor", "middle")
@@ -108,10 +113,10 @@
 			});
 
 		var g_circles = d3.select("svg").append("g")
-			.attr("transform", "translate(60,0)"),
+			.attr("transform", "translate(60,-10)"),
 
 			g_curve = d3.select("svg").append("g")
-			.attr("transform", "translate(60,0)"),
+			.attr("transform", "translate(60,-10)"),
 
 			line = d3.svg.line()
 			//CLICK EVENT LISTENER ON KEYS
@@ -126,7 +131,6 @@
 			_this.className = "key_line active";
 
 			var data = _STATE_DEFICIT_[d3.select(_this).attr("data-id")];
-
 			var y_scale = d3.scale.linear()
 				.domain([-30, 30])
 				.range([container_dimensions.height, 0]);
@@ -141,7 +145,7 @@
 				.transition()
 				.duration(300)
 				.attr("cx", function (d, i) {
-					return i * 55;
+					return i * 51;
 				})
 				.attr("cy", function (d, i) {
 					return y_scale(d);
@@ -152,23 +156,22 @@
 				.style("fill", "none")
 				.style("stroke", "#16A085")
 				.style("stroke-width", 2)
-
-
-			line.x(function (d, i) {
-					return i * 55;
-				})
-				.y(function (d, i) {
-					return y_scale(d);
-				})
-
-			g_curve.selectAll('path')
-				.data(data)
-				.enter().append('path')
-				.attr('d', function (d) {
-					return line(data);
-				})
-				.attr('stroke-width', 1)
-				.attr('stroke', "#16A085");
-		});
+//
+//			line.x(function (d, i) {
+//					return i * 51;
+//				})
+//				.y(function (d, i) {
+//					return y_scale(d);
+//				})
+//
+//			g_curve.selectAll('path')
+//				.data(data)
+//				.enter().append('path')
+//				.attr('d', function (d) {
+//					return line(data);
+//				})
+//				.attr('stroke-width', 1)
+//				.attr('stroke', "#16A085");
+//		});
 	});
 }());
