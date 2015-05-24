@@ -75,7 +75,7 @@
 		d3.select(".y.axis")
 			.append("text")
 			.attr("text-anchor", "middle")
-			.text("percent on time")
+			.text("Deficit / surplus")
 			.attr("transform", "rotate (-270, 0, 0)")
 			.attr("x", container_dimensions.height / 2)
 			.attr("y", 50);
