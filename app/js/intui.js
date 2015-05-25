@@ -89,6 +89,7 @@
 			.scale(percent_scale)
 			.orient("left");
 
+
 		chart.append("g")
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + chart_dimensions.height + ")")
@@ -129,10 +130,35 @@
 			.attr("transform", "translate(60,-10)"),
 
 			g_curve = d3.select("svg").append("g")
-			.attr("transform", "translate(60,-10)"),
+			.attr("transform", "translate(60,10)"),
 
-			line = d3.svg.line()
-			//CLICK EVENT LISTENER ON KEYS
+			// the zero line
+			lineData = [
+				{
+					"x": 0,
+					"y": (chart_dimensions.height / 2)
+				},
+				{
+					"x": chart_dimensions.width,
+					"y": chart_dimensions.height / 2
+				}
+			],
+
+			theZeroLine = d3.svg.line()
+			.x(function (d) {
+				return d.x;
+			})
+			.y(function (d) {
+				return d.y;
+			}),
+
+			_CURVE_DATA_ = [];
+
+		g_curve.append("path")
+			.attr("d", theZeroLine(lineData))
+			.style("stroke-width", 1)
+			.style("stroke", "gray");
+
 		var getRandomInt = function (min, max) {
 			return Math.round(Math.random() * (max - min + 1)) + min;
 		}(0, _STATES_.length);
@@ -167,6 +193,22 @@
 			var y_scale = d3.scale.linear()
 				.domain([-30, 30])
 				.range([container_dimensions.height, 0]);
+
+			var theCurve = d3.svg.line()
+				.x(function (d, i) {
+					return i * 51;
+				})
+				.y(function (d) {
+					return y_scale(d);
+				})
+				.interpolate("cardinal");
+
+			g_curve.append("g")
+				.attr("transform", "translate(0," + (-20) + ")")
+				.append("path")
+				.attr("d", theCurve(data))
+				.style("stroke-width", 1)
+				.style("stroke", "#16A085");
 
 			g_circles.selectAll("circle")
 				.data(data)
@@ -214,23 +256,9 @@
 				.style("stroke", "#16A085")
 				.style("stroke-width", 2)
 
-
-			var line = d3.svg.line()
-				.x(function (d, i) {
-					return i * 55;
-				})
-				.y(function (d) {
-					return y_scale(d);
-				})
-				.interpolate("basis");
-
-			g_curve.append("path")
-				.attr("d", line(data));
 		};
 
-
-
-		// adding event listener
+		//CLICK EVENT LISTENER ON KEYS
 		key_items.on("click", plotCircles);
 		plotCircles();
 
