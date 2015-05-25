@@ -88,7 +88,7 @@
 		d3.select(".y.axis")
 			.append("text")
 			.attr("text-anchor", "middle")
-			.text("Deficit / surplus")
+			.text("Percentage -- Deficit / surplus")
 			.attr("transform", "rotate (-270, 0, 0)")
 			.attr("x", container_dimensions.height / 2)
 			.attr("y", 50);
@@ -120,17 +120,29 @@
 
 			line = d3.svg.line()
 			//CLICK EVENT LISTENER ON KEYS
-		key_items.on("click", function (e) {
-			var _this = this;
-			var KEY_NODES = _this.parentElement.childNodes;
-			for (var i = 0; i < KEY_NODES.length; i++) {
-				if (KEY_NODES[i].className === "key_line active") {
-					KEY_NODES[i].className = "key_line";
-				}
-			}
-			_this.className = "key_line active";
 
-			var data = _STATE_DEFICIT_[d3.select(_this).attr("data-id")];
+		var plotCircles = function (data) {
+			var _this;
+			if (this) {
+				_this = this;
+				data = _STATE_DEFICIT_[d3.select(_this).attr("data-id")];
+				if (_this.parentElement.childNodes) {
+					var KEY_NODES = _this.parentElement.childNodes;
+					for (var i = 0; i < KEY_NODES.length; i++) {
+						if (KEY_NODES[i].className === "key_line active") {
+							KEY_NODES[i].className = "key_line";
+						}
+					};
+					_this.className = "key_line active";
+				} else {
+					return;
+				}
+			} else {
+				data = _STATE_DEFICIT_[16];
+				var selection = d3.selectAll(".key_line")[0][16];
+				selection.className = "key_line active";
+			}
+
 			var y_scale = d3.scale.linear()
 				.domain([-30, 30])
 				.range([container_dimensions.height, 0]);
@@ -153,25 +165,13 @@
 				.attr("r", function (d, i) {
 					return 5;
 				})
-				.style("fill", "none")
+				.style("fill", "#16A085")
 				.style("stroke", "#16A085")
 				.style("stroke-width", 2)
-//
-//			line.x(function (d, i) {
-//					return i * 51;
-//				})
-//				.y(function (d, i) {
-//					return y_scale(d);
-//				})
-//
-//			g_curve.selectAll('path')
-//				.data(data)
-//				.enter().append('path')
-//				.attr('d', function (d) {
-//					return line(data);
-//				})
-//				.attr('stroke-width', 1)
-//				.attr('stroke', "#16A085");
-		});
+		};
+
+		// adding event listener
+		key_items.on("click", plotCircles);
+		plotCircles();
 	});
 }());
