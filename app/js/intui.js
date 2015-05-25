@@ -58,6 +58,12 @@
 			.attr("transform", "translate(" + margins.left + "," + margins.top + ")")
 			.attr("id", "chart"),
 
+			tooltip = d3.select('body').append('div')
+			.style('position', 'absolute')
+			.style('padding', '0 10px')
+			.style('background', 'white')
+			.style('opacity', 0),
+
 			timeDomain = [new Date(1998, 0), new Date(2014, 0)],
 
 			time_scale = d3.time.scale()
@@ -154,6 +160,30 @@
 				.style("fill", "#16A085")
 
 			d3.selectAll("circle")
+				.on("mouseover", function (d) {
+
+					tooltip.transition()
+						.style("opacity", 0.9)
+					tooltip.html(d)
+						.style("left", (d3.event.pageX ) + "px")
+						.style("top", (d3.event.pageY - 30 ) + "px")
+
+					d3.select(this)
+						.transition()
+						.ease("elastic")
+						.duration(200)
+						.style("stroke-width", 10);
+				})
+				.on("mouseleave", function () {
+					tooltip.transition()
+						.style("opacity", 0)
+
+					d3.select(this)
+						.transition()
+						.ease("elastic")
+						.duration(200)
+						.style("stroke-width", 2);
+				})
 				.transition()
 				.duration(300)
 				.attr("cx", function (d, i) {
@@ -168,10 +198,14 @@
 				.style("fill", "#16A085")
 				.style("stroke", "#16A085")
 				.style("stroke-width", 2)
+
+
+
 		};
 
 		// adding event listener
 		key_items.on("click", plotCircles);
 		plotCircles();
+
 	});
 }());

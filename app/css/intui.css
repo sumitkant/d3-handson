@@ -50,6 +50,13 @@ path {
 	left: 50%;
 	transform: translateX(-50%);
 }
+#tooltip{
+	display: none;
+	width: 100px;
+	height: 30px;
+	background: rgba(0,0,0,0.3);
+	color: white;
+}
 
 .key_line {
 	width: 100%;
