@@ -64,6 +64,13 @@
 			.style('background', 'white')
 			.style('opacity', 0),
 
+
+			stateName = d3.select('#stateName')
+			.style('padding', '5px 10px')
+			.style('text-decoration', "underline")
+			.style("font-size", "0.8em")
+			.style("color", "#16A085"),
+
 			timeDomain = [new Date(1998, 0), new Date(2014, 0)],
 
 			time_scale = d3.time.scale()
@@ -126,15 +133,17 @@
 
 			line = d3.svg.line()
 			//CLICK EVENT LISTENER ON KEYS
-		var getRandomInt = function(min, max) {
+		var getRandomInt = function (min, max) {
 			return Math.round(Math.random() * (max - min + 1)) + min;
 		}(0, _STATES_.length);
 
 		var plotCircles = function (data) {
-			var _this;
-			if (this) {
+			var _this, dataId;
+			if (this) { // check where the circle is ther  or not
 				_this = this;
-				data = _STATE_DEFICIT_[d3.select(_this).attr("data-id")];
+				dataId = d3.select(_this).attr("data-id");
+				data = _STATE_DEFICIT_[dataId];
+				stateName.html(_STATES_[dataId])
 				if (_this.parentElement.childNodes) {
 					var KEY_NODES = _this.parentElement.childNodes;
 					for (var i = 0; i < KEY_NODES.length; i++) {
@@ -147,9 +156,12 @@
 					return;
 				}
 			} else {
+				// to plot a random data on reload
 				data = _STATE_DEFICIT_[getRandomInt];
+				// makes the STATE for whic the graph is plotted active
 				var selection = d3.selectAll(".key_line")[0][getRandomInt];
 				selection.className = "key_line active";
+				stateName.html(_STATES_[getRandomInt]);
 			}
 
 			var y_scale = d3.scale.linear()
@@ -167,7 +179,7 @@
 
 					tooltip.transition()
 						.style("opacity", 0.9)
-					tooltip.html(d)
+					tooltip.html(d + "%")
 						.style("left", (d3.event.pageX) + "px")
 						.style("top", (d3.event.pageY - 30) + "px")
 
@@ -203,8 +215,20 @@
 				.style("stroke-width", 2)
 
 
+			var line = d3.svg.line()
+				.x(function (d, i) {
+					return i * 55;
+				})
+				.y(function (d) {
+					return y_scale(d);
+				})
+				.interpolate("basis");
 
+			g_curve.append("path")
+				.attr("d", line(data));
 		};
+
+
 
 		// adding event listener
 		key_items.on("click", plotCircles);
