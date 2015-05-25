@@ -126,6 +126,9 @@
 
 			line = d3.svg.line()
 			//CLICK EVENT LISTENER ON KEYS
+		var getRandomInt = function(min, max) {
+			return Math.round(Math.random() * (max - min + 1)) + min;
+		}(0, _STATES_.length);
 
 		var plotCircles = function (data) {
 			var _this;
@@ -144,8 +147,8 @@
 					return;
 				}
 			} else {
-				data = _STATE_DEFICIT_[16];
-				var selection = d3.selectAll(".key_line")[0][16];
+				data = _STATE_DEFICIT_[getRandomInt];
+				var selection = d3.selectAll(".key_line")[0][getRandomInt];
 				selection.className = "key_line active";
 			}
 
@@ -165,8 +168,8 @@
 					tooltip.transition()
 						.style("opacity", 0.9)
 					tooltip.html(d)
-						.style("left", (d3.event.pageX ) + "px")
-						.style("top", (d3.event.pageY - 30 ) + "px")
+						.style("left", (d3.event.pageX) + "px")
+						.style("top", (d3.event.pageY - 30) + "px")
 
 					d3.select(this)
 						.transition()
