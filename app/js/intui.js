@@ -174,7 +174,6 @@
 				.domain([-30, 30])
 				.range([container_dimensions.height, 0]);
 
-
 			// check where the circle is there or not
 			if (this) {
 				_this = this;
@@ -200,9 +199,10 @@
 				selection.className = "key_line active";
 				stateName.html(_STATES_[getRandomInt]);
 			} // else
-
-
-			var curveStorkeWidth = 3,
+			console.log(data)
+			var maxValue = d3.select("#minMax").append("div").attr("class", "values maxVal"),
+				minValue = d3.select("#minMax").append("div").attr("class", "values minVal"),
+				curveStorkeWidth = 3,
 				theCurve = d3.svg.line()
 				.x(function (d, i) {
 					return i * 51;
@@ -216,10 +216,19 @@
 				})
 				.interpolate("cardinal");
 
+			var minMax = d3.select("#minMax")[0][0];
+			console.dir(minMax.children);
+			if ((minMax.childElementCount / 2) > 1) {
+				d3.selectAll(".values").remove();
+			} else {
+				maxValue.append("p").text(d3.max(data));
+				minValue.append("p").text(d3.min(data));
+			}
+			// render the line once
+			// do not produce multiple line when a state is selected
 			var curvesContainer = d3.select("#pathContainer")[0][0];
-			console.log(curvesContainer.childNodes.length);
 			if (curvesContainer.childNodes.length > 1) {
-				d3.selectAll(".curves").transition(250).ease("elastic").remove();
+				d3.selectAll(".curves").transition(250).ease("easeOut").remove();
 			}
 
 			g_curve.append("g")
@@ -243,7 +252,7 @@
 						.style("opacity", 0.9)
 					tooltip.html(d + "%")
 						.style("left", (d3.event.pageX) + "px")
-						.style("top", (d3.event.pageY - 30) + "px")
+						.style("top", (d3.event.pageY - 40) + "px")
 						.style("font-size", 20 + "px");
 
 					d3.select(this)
