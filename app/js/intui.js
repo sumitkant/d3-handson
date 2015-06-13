@@ -201,13 +201,18 @@
 				stateName.html(_STATES_[getRandomInt]);
 			} // else
 
+
 			var curveStorkeWidth = 3,
 				theCurve = d3.svg.line()
 				.x(function (d, i) {
 					return i * 51;
 				})
 				.y(function (d) {
-					return y_scale(d);
+					if (d == -200) {
+						return y_scale(0);
+					} else {
+						return y_scale(d);
+					}
 				})
 				.interpolate("cardinal");
 
