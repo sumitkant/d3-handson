@@ -210,8 +210,12 @@
 					return y_scale(d);
 				})
 				.interpolate("cardinal");
-			var curvesContainer = d3.selectAll(".curves")[0];
-			console.log(curvesContainer.length);
+
+			var curvesContainer = d3.select("#pathContainer")[0][0];
+			console.log(curvesContainer.childNodes.length);
+			if (curvesContainer.childNodes.length > 1) {
+				d3.selectAll(".curves").transition(250).ease("elastic").remove();
+			}
 
 			g_curve.append("g")
 				.attr("transform", "translate(0," + (-20) + ")")
