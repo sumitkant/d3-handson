@@ -11,5 +11,9 @@
     "gulp": "git://github.com/gulpjs/gulp.git#4.0",
     "gulp-util": "^2.2.20",
     "gulp-webserver": "^0.8.1"
+  },
+  "dependencies": {
+    "d3": "^3.5.5",
+    "jsdom": "^5.4.3"
   }
 }

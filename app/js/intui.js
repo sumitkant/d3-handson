@@ -126,11 +126,13 @@
 				return d;
 			});
 
-		var g_circles = d3.select("svg").append("g")
-			.attr("transform", "translate(60,-10)"),
-
+		var
 			g_curve = d3.select("svg").append("g")
-			.attr("transform", "translate(60,10)"),
+			.attr("transform", "translate(60,10)")
+			.attr("id", "pathContainer"),
+
+			g_circles = d3.select("svg").append("g")
+			.attr("transform", "translate(60,-10)"),
 
 			// the zero line
 			lineData = [
@@ -154,18 +156,27 @@
 
 			_CURVE_DATA_ = [];
 
-		g_curve.append("path")
+		g_curve.append("g").append("path")
 			.attr("d", theZeroLine(lineData))
 			.style("stroke-width", 1)
 			.style("stroke", "gray");
 
+		//generate a random curve on load
 		var getRandomInt = function (min, max) {
 			return Math.round(Math.random() * (max - min + 1)) + min;
 		}(0, _STATES_.length);
 
-		var plotCircles = function (data) {
-			var _this, dataId;
-			if (this) { // check where the circle is ther  or not
+		//plot circles and curve
+		var plotter = function (data) {
+			var _this,
+				dataId,
+				y_scale = d3.scale.linear()
+				.domain([-30, 30])
+				.range([container_dimensions.height, 0]);
+
+
+			// check where the circle is there or not
+			if (this) {
 				_this = this;
 				dataId = d3.select(_this).attr("data-id");
 				data = _STATE_DEFICIT_[dataId];
@@ -184,17 +195,14 @@
 			} else {
 				// to plot a random data on reload
 				data = _STATE_DEFICIT_[getRandomInt];
-				// makes the STATE for whic the graph is plotted active
+				// makes the STATE for whic the graph is plott ed active
 				var selection = d3.selectAll(".key_line")[0][getRandomInt];
 				selection.className = "key_line active";
 				stateName.html(_STATES_[getRandomInt]);
-			}
+			} // else
 
-			var y_scale = d3.scale.linear()
-				.domain([-30, 30])
-				.range([container_dimensions.height, 0]);
-
-			var theCurve = d3.svg.line()
+			var curveStorkeWidth = 3,
+				theCurve = d3.svg.line()
 				.x(function (d, i) {
 					return i * 51;
 				})
@@ -202,12 +210,15 @@
 					return y_scale(d);
 				})
 				.interpolate("cardinal");
+			var curvesContainer = d3.selectAll(".curves")[0];
+			console.log(curvesContainer.length);
 
 			g_curve.append("g")
 				.attr("transform", "translate(0," + (-20) + ")")
+				.attr("class", "curves")
 				.append("path")
 				.attr("d", theCurve(data))
-				.style("stroke-width", 1)
+				.style("stroke-width", curveStorkeWidth)
 				.style("stroke", "#16A085");
 
 			g_circles.selectAll("circle")
@@ -216,20 +227,21 @@
 				.append("circle")
 				.style("fill", "#16A085")
 
+			//tooltip application
 			d3.selectAll("circle")
 				.on("mouseover", function (d) {
-
 					tooltip.transition()
 						.style("opacity", 0.9)
 					tooltip.html(d + "%")
 						.style("left", (d3.event.pageX) + "px")
 						.style("top", (d3.event.pageY - 30) + "px")
+						.style("font-size", 20 + "px");
 
 					d3.select(this)
 						.transition()
 						.ease("elastic")
-						.duration(200)
-						.style("stroke-width", 10);
+						.duration(250)
+						.attr("r", 15);
 				})
 				.on("mouseleave", function () {
 					tooltip.transition()
@@ -238,8 +250,8 @@
 					d3.select(this)
 						.transition()
 						.ease("elastic")
-						.duration(200)
-						.style("stroke-width", 2);
+						.duration(250)
+						.attr("r", 8);
 				})
 				.transition()
 				.duration(300)
@@ -250,17 +262,15 @@
 					return y_scale(d);
 				})
 				.attr("r", function (d, i) {
-					return 5;
+					return 8;
 				})
 				.style("fill", "#16A085")
-				.style("stroke", "#16A085")
+				.style("stroke", "black")
 				.style("stroke-width", 2)
-
 		};
 
-		//CLICK EVENT LISTENER ON KEYS
-		key_items.on("click", plotCircles);
-		plotCircles();
-
+		//CLICK EVsENT LISTENER ON KEYS
+		key_items.on("click", plotter);
+		plotter();
 	});
 }());
