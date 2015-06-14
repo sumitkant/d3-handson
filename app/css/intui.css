@@ -9,6 +9,11 @@ body {
 	background-color: #16A085;
 	color: white;
 }
+
+p{
+	margin: 0;
+	padding: 0;
+}
 #container {
 	width: 90%;
 	margin: 0 auto;
@@ -96,4 +101,14 @@ path {
 
 .key_label {
 	padding-top: 2px;
+}
+
+#minMax {
+	position: relative;
+	z-index: -1000;
+}
+
+.minVal, .maxVal{
+	font-size: 1em;
+	margin-right: 10em;
 }

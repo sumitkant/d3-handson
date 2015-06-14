@@ -199,7 +199,6 @@
 				selection.className = "key_line active";
 				stateName.html(_STATES_[getRandomInt]);
 			} // else
-			console.log(data)
 			var maxValue = d3.select("#minMax").append("div").attr("class", "values maxVal"),
 				minValue = d3.select("#minMax").append("div").attr("class", "values minVal"),
 				curveStorkeWidth = 3,
@@ -216,14 +215,27 @@
 				})
 				.interpolate("cardinal");
 
+
+			var modifiedData = [],
+				nonExistentValues = 0;
+
+			for (var i = 0; i < data.length; i++) {
+				if (data[i] !== -200) {
+					modifiedData.push(parseFloat(data[i]));
+				} else {
+					nonExistentValues++;
+				}
+			};
+
+			// evaluates and prints maximmum and minimum values
 			var minMax = d3.select("#minMax")[0][0];
 			console.dir(minMax.children);
 			if ((minMax.childElementCount / 2) > 1) {
-				d3.selectAll(".values").remove();
-			} else {
-				maxValue.append("p").text(d3.max(data));
-				minValue.append("p").text(d3.min(data));
+				d3.selectAll(".values > p").remove();
 			}
+			maxValue.append("p").text("Maximum : " + d3.max(modifiedData) + "%");
+			minValue.append("p").text("Minimum : " + d3.min(modifiedData) + "%");
+
 			// render the line once
 			// do not produce multiple line when a state is selected
 			var curvesContainer = d3.select("#pathContainer")[0][0];
